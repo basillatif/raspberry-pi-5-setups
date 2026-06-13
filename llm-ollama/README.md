@@ -49,13 +49,32 @@ curl -s http://bobbypi.local:11434/api/generate -d '{
 }'
 ```
 
+## 4. Access from other devices on your network
+
+By default Ollama binds to `127.0.0.1`. To reach it from your Mac or other
+devices on your home network, create a systemd override:
+
+```bash
+ssh -t bobbypi "sudo mkdir -p /etc/systemd/system/ollama.service.d && \
+printf '[Service]\nEnvironment=\"OLLAMA_HOST=0.0.0.0\"\n' | sudo tee /etc/systemd/system/ollama.service.d/override.conf && \
+sudo systemctl daemon-reload && sudo systemctl restart ollama"
+```
+
+Then from another machine on the same network:
+
+```bash
+curl http://bobbypi.local:11434/api/generate -d '{
+  "model": "llama3.2:3b",
+  "prompt": "What is 2+2?",
+  "stream": false
+}'
+```
+
+Only do this on a trusted home network — the API has no authentication.
+
 ## Notes
 
 - Ollama runs CPU-only on the Pi 5 (no GPU). A 3B model responds in a few
   seconds for short prompts.
-- The API binds to `127.0.0.1` by default. To reach it from other machines on
-  your network, set `OLLAMA_HOST=0.0.0.0` for the ollama service (via
-  `systemctl edit ollama`) and restart it. Only do this on a trusted home
-  network.
 - Models are stored under `/usr/share/ollama/.ollama/models`. Check disk usage
   with `df -h` if you pull multiple models.
