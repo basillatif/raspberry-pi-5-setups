@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+
+# Secrets & config
+.env
+*.env
+*credentials*
+*secrets*
+*.key
+*.pem
+
+# Logs
+*.log
+
+# Backups / images
+*.img
+*.iso
+*.bak
+
+# Screenshots
+screenshots/*
+!screenshots/.gitkeep
